@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.heady.sat.model.Category;
+import com.heady.sat.model.Product;
+import com.heady.sat.model.Tax;
+import com.heady.sat.model.Variant;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -422,7 +425,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
                     catDao.setId(cursor.getString(cursor.getColumnIndex("id")));
                     catDao.setName(cursor.getString(cursor.getColumnIndex("name")));
-//                    catDao.setChildCategories(cursor.getString(cursor.getColumnIndex("ROLECODE")));
+                    catDao.setProducts(getProduct(cursor.getString(cursor.getColumnIndex("id"))));
 
 
                     list.add(catDao);
@@ -433,5 +436,94 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return list;
     }
+
+    public ArrayList<Product> getProduct(String catId) {
+        ArrayList<Product> list = new ArrayList<>();
+
+        Cursor cursor = null;
+        try {
+            String query = "Select id,name,date_added from TBPRO where CAT_ID = '"+catId+"'";
+            cursor = getCusrsor(query);
+            cursor.moveToFirst();
+
+            Product proDao;
+
+            if (cursor.getCount() != 0) {
+                do {
+                    proDao = new Product();
+
+                    proDao.setId(cursor.getString(cursor.getColumnIndex("id")));
+                    proDao.setName(cursor.getString(cursor.getColumnIndex("name")));
+                    proDao.setDateAdded(cursor.getString(cursor.getColumnIndex("date_added")));
+                    proDao.setVariants(getVariant(cursor.getString(cursor.getColumnIndex("id"))));
+                    proDao.setTax(getTax(cursor.getString(cursor.getColumnIndex("id"))));
+
+                    list.add(proDao);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public ArrayList<Variant> getVariant(String proId) {
+        ArrayList<Variant> list = new ArrayList<>();
+
+        Cursor cursor = null;
+        try {
+            String query = "Select id,color,size, price from TBVAR where PROD_ID = '"+proId+"'";
+            cursor = getCusrsor(query);
+            cursor.moveToFirst();
+
+            Variant varDao;
+
+            if (cursor.getCount() != 0) {
+                do {
+                    varDao = new Variant();
+
+                    varDao.setId(cursor.getString(cursor.getColumnIndex("id")));
+                    varDao.setColor(cursor.getString(cursor.getColumnIndex("color")));
+                    varDao.setSize(cursor.getString(cursor.getColumnIndex("size")));
+                    varDao.setPrice(cursor.getString(cursor.getColumnIndex("price")));
+
+
+                    list.add(varDao);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+    public Tax getTax(String proId) {
+        Tax list = new Tax();
+
+        Cursor cursor = null;
+        try {
+            String query = "Select name,value from TBTAX where PROD_ID = '"+proId+"'";
+            cursor = getCusrsor(query);
+            cursor.moveToFirst();
+
+            Tax taxDao;
+
+            if (cursor.getCount() != 0) {
+                do {
+                    taxDao = new Tax();
+
+                    taxDao.setName(cursor.getString(cursor.getColumnIndex("name")));
+                    taxDao.setValue(cursor.getString(cursor.getColumnIndex("value")));
+
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 
 }

@@ -3,16 +3,16 @@ package com.heady.sat.model;
 
 public class Variant {
 
-    private Integer id;
+    private String id;
     private String color;
     private Object size;
-    private Integer price;
+    private String price;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -32,11 +32,11 @@ public class Variant {
         this.size = size;
     }
 
-    public Integer getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.heady.sat.model.Product;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,10 +18,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	private Context _context;
 	private List<String> _listDataHeader; // header titles
 	// child data in format of header title, child title
-	private HashMap<String, List<String>> _listDataChild;
+	private HashMap<String, List<Product>> _listDataChild;
 
 	public ExpandableListAdapter(Context context, List<String> listDataHeader,
-			HashMap<String, List<String>> listChildData) {
+			HashMap<String, List<Product>> listChildData) {
 		this._context = context;
 		this._listDataHeader = listDataHeader;
 		this._listDataChild = listChildData;
@@ -28,7 +30,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public Object getChild(int groupPosition, int childPosititon) {
 		return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-				.get(childPosititon);
+				.get(childPosititon).getName();
 	}
 
 	@Override

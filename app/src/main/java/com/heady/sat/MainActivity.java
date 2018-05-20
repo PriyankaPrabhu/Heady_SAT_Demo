@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.heady.sat.api.DataRequester;
 import com.heady.sat.db.DBHandler;
 import com.heady.sat.model.Category;
+import com.heady.sat.model.Product;
 
 import org.apache.commons.io.FileUtils;
 
@@ -27,16 +28,16 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+    HashMap<String, List<Product>> listDataChild;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new DataRequester().requestData(this);
-
-        backupDatabase(this);
+//        new DataRequester().requestData(this);
+//
+//        backupDatabase(this);
         init();
 
 
@@ -77,17 +78,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Listview Group collasped listener
-        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
 
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -96,7 +87,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
                 // TODO Auto-generated method stub
+
+
+
                 Intent intent = new Intent(MainActivity.this,ProductCatlogueView.class);
+
                 startActivity(intent);
                 return false;
             }
@@ -107,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void prepareListData() {
         listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataChild = new HashMap<String, List<Product>>();
 
         DBHandler dbHandler= DBHandler.getInstance(MainActivity.this);
         ArrayList<Category> categories= dbHandler.getCategory();
@@ -116,39 +111,12 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i <categories.size() ; i++) {
             Category category= categories.get(i);
             listDataHeader.add(category.getName());
+            List<Product> products = category.getProducts();
+            listDataChild.put(listDataHeader.get(i), products);
         }
-//        listDataHeader.add("Top 250");
-//        listDataHeader.add("Now Showing");
-//        listDataHeader.add("Coming Soon..");
 
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("The Shawshank Redemption");
-        top250.add("The Godfather");
-        top250.add("The Godfather: Part II");
-        top250.add("Pulp Fiction");
-        top250.add("The Good, the Bad and the Ugly");
-        top250.add("The Dark Knight");
-        top250.add("12 Angry Men");
 
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
 
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("2 Guns");
-        comingSoon.add("The Smurfs 2");
-        comingSoon.add("The Spectacular Now");
-        comingSoon.add("The Canyons");
-        comingSoon.add("Europa Report");
-
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
     }
     public boolean backupDatabase(Context context) {
         File from = context.getDatabasePath("EDATA");

@@ -44,6 +44,11 @@ public class ProductCatlogueView extends AppCompatActivity {
         setContentView(R.layout.activity_product_catlogue_view);
         RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
         mActivity=this;
+
+        Intent intent = this.getIntent();
+        Bundle bundle = intent.getExtras();
+
+
         setupRecyclerView(rv);
 
     }

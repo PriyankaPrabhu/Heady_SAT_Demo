@@ -4,7 +4,7 @@ package com.heady.sat.model;
 public class Tax {
 
     private String name;
-    private Integer value;
+    private String value;
 
     public String getName() {
         return name;
@@ -14,11 +14,11 @@ public class Tax {
         this.name = name;
     }
 
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
