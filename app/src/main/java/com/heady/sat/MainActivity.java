@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        new DataRequester().requestData(this);
-//
+        new DataRequester().requestData(this);
+
 //        backupDatabase(this);
         init();
 
@@ -60,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v,
                                         int groupPosition, long id) {
-                // Toast.makeText(getApplicationContext(),
-                // "Group Clicked " + listDataHeader.get(groupPosition),
-                // Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -88,10 +85,7 @@ public class MainActivity extends AppCompatActivity {
                                         int groupPosition, int childPosition, long id) {
                 // TODO Auto-generated method stub
 
-
-
                 Intent intent = new Intent(MainActivity.this,ProductCatlogueView.class);
-
                 startActivity(intent);
                 return false;
             }
@@ -114,10 +108,8 @@ public class MainActivity extends AppCompatActivity {
             List<Product> products = category.getProducts();
             listDataChild.put(listDataHeader.get(i), products);
         }
-
-
-
     }
+
     public boolean backupDatabase(Context context) {
         File from = context.getDatabasePath("EDATA");
         File to = getBackupDatabaseFile();
